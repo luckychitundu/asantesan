@@ -25,6 +25,11 @@ function App() {
 
 
   const handleGeneratePrompt = async () => {
+    if (emailValue === '' || selectedValue === '' || customValue === '') {
+      alert('Please fill in all fields');
+      return;
+    }
+
     try {
       // Assuming you have some data to send
       const dataToSend = { emailValue: emailValue, selectedValue: selectedValue, customValue: customValue };
