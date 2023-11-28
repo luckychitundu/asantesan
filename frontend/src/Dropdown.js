@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Dropdown = () => {
+const Dropdown = (props) => {
   // State to manage the selected value
   const [selectedValue, setSelectedValue] = useState('');
 
