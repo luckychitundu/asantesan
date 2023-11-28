@@ -1,11 +1,57 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
-import Dropdown from './Dropdown.js';
-import EmailArea from './EmailArea.js';
-import CustomArea from './CustomArea.js';
-import EmailPromptGenerator from './EmailPromptGenerator.js';
+
 
 function App() {
+  const [emailValue, setEmailValue] = useState('');
+  const [selectedValue, setSelectedValue] = useState('');
+  const [customValue, setCustomValue] = useState('');
+  const [result, setResult] = useState('');
+
+  // Function to handle changes in the textarea
+  const handleEmailChange = (event) => {
+    setEmailValue(event.target.value);
+  };
+
+  // Function to handle changes in the dropdown selection
+  const handleDropdownChange = (event) => {
+    setSelectedValue(event.target.value);
+  };
+
+     // Function to handle changes in the textarea
+  const handleCustomChange = (event) => {
+    setCustomValue(event.target.value);
+  };
+
+
+  const handleGeneratePrompt = async () => {
+    if (emailValue === '' || selectedValue === '' || customValue === '') {
+      alert('Please fill in all fields');
+      return;
+    }
+
+    try {
+      // Assuming you have some data to send
+      const dataToSend = { emailValue: emailValue, selectedValue: selectedValue, customValue: customValue };
+  
+      // Send data to Flask backend
+      const response = await fetch('http://localhost:5000/api', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataToSend),
+      });
+  
+      // Parse and set the result from the Flask backend
+      const resultData = await response.json();
+      setResult(resultData.result);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+  
+
   return (
     <>
     <div>
@@ -27,19 +73,56 @@ function App() {
     </div>
     <h2>EMAIL RESPONSE GENERATOR</h2>
     <div className='textAreas'>
-    <EmailArea />
+
+    <div>
+      {/* <label htmlFor="textarea">Enter Text:</label> */}
+      <textarea
+        id="textarea"
+        value={emailValue}
+        onChange={handleEmailChange}
+        rows={12} // Set the number of rows if needed
+        cols={50} // Set the number of columns if needed
+        placeholder='Enter the email you are replying to here...'
+      />
+    </div>
+
     <div className='miniArea'>
-      <Dropdown />
-      <CustomArea />
+    <div>
+      <label htmlFor="dropdown">Response Tone:</label>
+      <select id="dropdown" value={selectedValue} onChange={handleDropdownChange}>
+        <option value="">Select an option</option>
+        <option value="Professional">Professional</option>
+        <option value="Casual">Casual</option>
+        <option value="Creative">Creative</option>
+      </select>
+    </div>
+
+    <div>
+      {/* <label htmlFor="textarea">Enter Text:</label> */}
+      <textarea
+        id="textarea"
+        value={customValue}
+        onChange={handleCustomChange}
+        rows={8} // Set the number of rows if needed
+        cols={50} // Set the number of columns if needed
+        placeholder='I want the response to include...'
+      />
     </div>
     </div>
-    
-    <div className='button'>
-      <button>Generate Response</button>
     </div>
+
+
+    <div>
+        <button onClick={handleGeneratePrompt}>Generate Prompt</button>
+      <div>
+          <h3>Generated Prompt:</h3>
+          <p>{result}</p>
+      </div>
+    </div>
+
 
     </>
   )
 }
 
-export default App
+export default App;
