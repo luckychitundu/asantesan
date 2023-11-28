@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const CustomArea = () => {
+const CustomArea = (props) => {
   // State to manage the textarea value
   const [customareaValue, setCustomareaValue] = useState('');
 
