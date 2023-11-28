@@ -1,15 +1,12 @@
 import React, {useState} from 'react';
 import './App.css';
-// import Dropdown from './Dropdown.js';
-// import EmailArea from './EmailArea.js';
-// import CustomArea from './CustomArea.js';
-// import EmailPromptGenerator from './EmailPromptGenerator.js';
+
 
 function App() {
   const [emailValue, setEmailValue] = useState('');
   const [selectedValue, setSelectedValue] = useState('');
   const [customValue, setCustomValue] = useState('');
-  const [generatedPrompt, setGeneratedPrompt] = useState('');
+  const [result, setResult] = useState('');
 
   // Function to handle changes in the textarea
   const handleEmailChange = (event) => {
@@ -27,20 +24,28 @@ function App() {
   };
 
 
-
-  function handleGeneratePrompt() {
-    if (emailValue && selectedValue && customValue) {
-      // Generate the prompt based on user input
-      const prompt = `Hello ${emailValue}! We appreciate your ${selectedValue} attitude. ${customValue}.`;
-
-      // Set the generated prompt in the state
-      setGeneratedPrompt(prompt);
-
-    } else {
-      // Handle case where not all required fields are filled
-      alert('Please fill in all fields.');
+  const handleGeneratePrompt = async () => {
+    try {
+      // Assuming you have some data to send
+      const dataToSend = { emailValue: emailValue, selectedValue: selectedValue, customValue: customValue };
+  
+      // Send data to Flask backend
+      const response = await fetch('http://localhost:5000/api', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataToSend),
+      });
+  
+      // Parse and set the result from the Flask backend
+      const resultData = await response.json();
+      setResult(resultData.result);
+    } catch (error) {
+      console.error('Error:', error);
     }
-  }
+  };
+  
 
   return (
     <>
@@ -106,7 +111,7 @@ function App() {
         <button onClick={handleGeneratePrompt}>Generate Prompt</button>
       <div>
           <h3>Generated Prompt:</h3>
-          <p>{generatedPrompt}</p>
+          <p>{result}</p>
       </div>
     </div>
 
@@ -115,4 +120,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
