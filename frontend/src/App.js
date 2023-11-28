@@ -36,8 +36,6 @@ function App() {
       // Set the generated prompt in the state
       setGeneratedPrompt(prompt);
 
-      // Display the prompt (you might want to use a modal or another UI element)
-      alert(prompt);
     } else {
       // Handle case where not all required fields are filled
       alert('Please fill in all fields.');
