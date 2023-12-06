@@ -1,6 +1,5 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import './App.css';
-
 
 function App() {
   const [emailValue, setEmailValue] = useState('');
@@ -8,21 +7,17 @@ function App() {
   const [customValue, setCustomValue] = useState('');
   const [result, setResult] = useState('');
 
-  // Function to handle changes in the textarea
   const handleEmailChange = (event) => {
     setEmailValue(event.target.value);
   };
 
-  // Function to handle changes in the dropdown selection
   const handleDropdownChange = (event) => {
     setSelectedValue(event.target.value);
   };
 
-     // Function to handle changes in the textarea
   const handleCustomChange = (event) => {
     setCustomValue(event.target.value);
   };
-
 
   const handleGeneratePrompt = async () => {
     if (emailValue === '' || selectedValue === '' || customValue === '') {
@@ -31,10 +26,7 @@ function App() {
     }
 
     try {
-      // Assuming you have some data to send
-      const dataToSend = { emailValue: emailValue, selectedValue: selectedValue, customValue: customValue };
-  
-      // Send data to Flask backend
+      const dataToSend = { emailValue, selectedValue, customValue };
       const response = await fetch('http://localhost:5000/api', {
         method: 'POST',
         headers: {
@@ -42,87 +34,76 @@ function App() {
         },
         body: JSON.stringify(dataToSend),
       });
-  
-      // Parse and set the result from the Flask backend
+
       const resultData = await response.json();
       setResult(resultData.result);
     } catch (error) {
       console.error('Error:', error);
     }
   };
-  
 
   return (
-    <>
-    <div>
-      {/* Navigation Bar */}
-      <nav>
-        <ul className='navbar'>
-          <li><a href="#asante">Asante</a></li>
+    <div className="container">
+      <header>
+        <h1>Welcome to Your Number One Smart Companion</h1>
+        <p>Let's get started!</p>
+      </header>
+
+      <nav className="navbar">
+        <ul>
+          {/* <li><a href="#asante">Asante</a></li> */}
           <li><a href="#pricing">Pricing</a></li>
           <li><a href="#services">Services</a></li>
           <li><a href="#about">About</a></li>
         </ul>
       </nav>
 
-      {/* Main Content */}
-      <div>
-        <h1>Welcome to Your Number One Smart Companion</h1>
-        <p>Lets get started!.</p>
-      </div>
-    </div>
-    <h2>EMAIL RESPONSE GENERATOR</h2>
-    <div className='textAreas'>
+      <div className="main-content">
+        <h2>EMAIL RESPONSE GENERATOR</h2>
 
-    <div>
-      {/* <label htmlFor="textarea">Enter Text:</label> */}
-      <textarea
-        id="textarea"
-        value={emailValue}
-        onChange={handleEmailChange}
-        rows={12} // Set the number of rows if needed
-        cols={50} // Set the number of columns if needed
-        placeholder='Enter the email you are replying to here...'
-      />
-    </div>
+        <form>
+          <div className="textAreas">
+            <div>
+              <textarea
+                value={emailValue}
+                onChange={handleEmailChange}
+                rows={12}
+                placeholder="Enter the email you are replying to here..."
+              />
+            </div>
 
-    <div className='miniArea'>
-    <div>
-      <label htmlFor="dropdown">Response Tone:</label>
-      <select id="dropdown" value={selectedValue} onChange={handleDropdownChange}>
-        <option value="">Select an option</option>
-        <option value="Professional">Professional</option>
-        <option value="Casual">Casual</option>
-        <option value="Creative">Creative</option>
-      </select>
-    </div>
+            <div className="miniArea">
+              <div>
+                <label htmlFor="dropdown">Response Tone:</label>
+                <select id="dropdown" value={selectedValue} onChange={handleDropdownChange}>
+                  <option value="">Select an option</option>
+                  <option value="Professional">Professional</option>
+                  <option value="Casual">Casual</option>
+                  <option value="Creative">Creative</option>
+                </select>
+              </div>
 
-    <div>
-      {/* <label htmlFor="textarea">Enter Text:</label> */}
-      <textarea
-        id="textarea"
-        value={customValue}
-        onChange={handleCustomChange}
-        rows={8} // Set the number of rows if needed
-        cols={50} // Set the number of columns if needed
-        placeholder='I want the response to include...'
-      />
-    </div>
-    </div>
-    </div>
+              <div>
+                <textarea
+                  value={customValue}
+                  onChange={handleCustomChange}
+                  rows={8}
+                  placeholder="I want the response to include..."
+                />
+              </div>
+            </div>
+          </div>
 
+          <button onClick={handleGeneratePrompt}>Generate Response</button>
+        </form>
 
-    <div>
-        <button onClick={handleGeneratePrompt}>Generate Prompt</button>
-      <div>
-          <h3>Generated Prompt:</h3>
+        <div className="result">
+          <h3>Generated Response:</h3>
           <p>{result}</p>
+        </div>
       </div>
     </div>
-
-
-    </>
-  )
+  );
 }
 
 export default App;
