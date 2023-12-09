@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import complogo from './assets/complogo.png';
 
 function App() {
   const [emailValue, setEmailValue] = useState('');
@@ -45,13 +46,15 @@ function App() {
   return (
     <div className="container">
       <header>
-        <h1>Welcome to Your Number One Smart Companion</h1>
+        <div className="logo">
+          <img src={complogo} alt="Company logo" width={100}/>
+          <h1>Welcome to Your Number One Smart Companion</h1> 
+        </div>
         <p>Let's get started!</p>
       </header>
 
       <nav className="navbar">
         <ul>
-          {/* <li><a href="#asante">Asante</a></li> */}
           <li><a href="#pricing">Pricing</a></li>
           <li><a href="#services">Services</a></li>
           <li><a href="#about">About</a></li>
