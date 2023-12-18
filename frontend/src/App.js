@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import copy from 'clipboard-copy';
 import './App.css';
 import complogo from './assets/complogo.png';
 
@@ -43,6 +44,19 @@ function App() {
       console.error('Error:', error);
     }
   };
+  
+   const handleCopyClick = async () => {
+      try {
+        await copy(result);
+        alert('Text copied to clipboard' + result);
+
+      } 
+      catch (error) { 
+        console.error('Error'+ error);
+      }
+
+   } 
+
 
   return (
     <div className="container">
@@ -104,6 +118,9 @@ function App() {
         <div className="result">
           <h3>Generated Response:</h3>
           <p>{result}</p>
+        </div>
+        <div>
+          <button type='button' onClick={handleCopyClick} >Copy Response</button>
         </div>
       </div>
     </div>
