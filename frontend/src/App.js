@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './App.css';
+import complogo from './assets/complogo.png';
 
 function App() {
   const [emailValue, setEmailValue] = useState('');
   const [selectedValue, setSelectedValue] = useState('');
   const [customValue, setCustomValue] = useState('');
   const [result, setResult] = useState('');
+  const [copySuccess, setCopySuccess] = useState('');
+  const textAreaRef = useRef(null);
 
   const handleEmailChange = (event) => {
     setEmailValue(event.target.value);
@@ -36,25 +39,48 @@ function App() {
       });
 
       const resultData = await response.json();
+      console.log(resultData.result);
       setResult(resultData.result);
     } catch (error) {
       console.error('Error:', error);
     }
   };
 
+  const copyToClipboard = (e) => {
+    textAreaRef.current.select();
+    try {
+      document.execCommand('copy');
+      setCopySuccess('Copied!');
+    } catch (err) {
+      console.error('Unable to copy to clipboard', err);
+      setCopySuccess('Copy failed');
+    }
+    e.target.focus();
+  };
+
   return (
     <div className="container">
       <header>
-        <h1>Welcome to Your Number One Smart Companion</h1>
+        <div className="logo">
+          <a href="">
+            <img src={complogo} alt="Company logo" width={100} />
+          </a>
+          <h1>Welcome to Your Number One Smart Companion</h1>
+        </div>
         <p>Let's get started!</p>
       </header>
 
       <nav className="navbar">
         <ul>
-          {/* <li><a href="#asante">Asante</a></li> */}
-          <li><a href="#pricing">Pricing</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#about">About</a></li>
+          <li>
+            <a href="#pricing">Pricing</a>
+          </li>
+          <li>
+            <a href="#services">Services</a>
+          </li>
+          <li>
+            <a href="#about">About</a>
+          </li>
         </ul>
       </nav>
 
@@ -75,7 +101,11 @@ function App() {
             <div className="miniArea">
               <div>
                 <label htmlFor="dropdown">Response Tone:</label>
-                <select id="dropdown" value={selectedValue} onChange={handleDropdownChange}>
+                <select
+                  id="dropdown"
+                  value={selectedValue}
+                  onChange={handleDropdownChange}
+                >
                   <option value="">Select an option</option>
                   <option value="Professional">Professional</option>
                   <option value="Casual">Casual</option>
@@ -92,15 +122,24 @@ function App() {
                 />
               </div>
             </div>
+
+            <button type="button" onClick={handleGeneratePrompt}>
+              Generate Response
+            </button>
+
+            {result && (
+              <div className="generated-response">
+                <button type="button" onClick={copyToClipboard} className="copy-button">
+                  Copy
+                </button>
+                {copySuccess && <p className="copy-success">{copySuccess}</p>}
+                <form>
+                  <textarea ref={textAreaRef} value={result} rows={10} readOnly />
+                </form>
+              </div>
+            )}
           </div>
-
-          <button onClick={handleGeneratePrompt}>Generate Response</button>
         </form>
-
-        <div className="result">
-          <h3>Generated Response:</h3>
-          <p>{result}</p>
-        </div>
       </div>
     </div>
   );
