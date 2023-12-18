@@ -107,3 +107,25 @@ button:hover {
   display: flex;
   justify-content: center;
 }
+
+.result-container {
+  position: relative;
+}
+
+.copy-button-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+}
+
+
+.generated-response {
+  position: relative;
+}
+
+.copy-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
