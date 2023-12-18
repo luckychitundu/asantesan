@@ -37,6 +37,7 @@ function App() {
       });
 
       const resultData = await response.json();
+      console.log(resultData.result);
       setResult(resultData.result);
     } catch (error) {
       console.error('Error:', error);
@@ -47,7 +48,7 @@ function App() {
     <div className="container">
       <header>
         <div className="logo">
-          <img src={complogo} alt="Company logo" width={100}/>
+          <a href=""><img src={complogo} alt="Company logo" width={100}/></a>
           <h1>Welcome to Your Number One Smart Companion</h1> 
         </div>
         <p>Let's get started!</p>
@@ -97,7 +98,7 @@ function App() {
             </div>
           </div>
 
-          <button onClick={handleGeneratePrompt}>Generate Response</button>
+          <button type='button' onClick={handleGeneratePrompt} >Generate Response</button>
         </form>
 
         <div className="result">
