@@ -122,6 +122,9 @@ button:hover {
 
 .generated-response {
   position: relative;
+  background-color: #f2f2f2; /* Add your preferred grey color code here */
+  padding: 15px; /* Add padding for spacing within the form */
+  border-radius: 5px; /* Optional: Add border-radius for rounded corners */
 }
 
 .copy-button {
@@ -129,3 +132,4 @@ button:hover {
   top: 0;
   right: 0;
 }
+
